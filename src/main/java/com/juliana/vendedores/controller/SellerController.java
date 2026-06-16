@@ -56,7 +56,7 @@ public class SellerController {
         return ResponseEntity.created(location).body(saved);
     }
 
-    @PutMapping("/{id}") // método POST (edit)
+    @PutMapping("/{id}") // método PUT (edit)
     public ResponseEntity<SellerEntity> update(
             @PathVariable Long id,
             @RequestBody @Valid SellerRequest request) {
