@@ -1,1 +1,10 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
+
+.nav-link:hover {
+  color: rgb(218, 188, 149) !important;
+}
+
+body {
+    background-color: antiquewhite;
+}
+
