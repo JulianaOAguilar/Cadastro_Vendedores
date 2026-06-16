@@ -1,6 +1,10 @@
 package com.juliana.vendedores.entity;
 
+import com.juliana.vendedores.enums.Gender;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,11 +22,8 @@ public class SellerEntity {
     private String name;
     private Double salary;
     private Double bonus;
-
-    public enum Gender {
-        MALE,
-        FEMALE
-    }
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     public Long getId() {
         return id;
@@ -79,5 +80,13 @@ public class SellerEntity {
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 }
