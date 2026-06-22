@@ -18,12 +18,14 @@
         </thead>
 
         <tbody>
-            <tr *ngFor="let seller of sellers()">
+   @for (seller of sellers(); track seller.id) {
+<tr>
   <td>{{ seller.name }}</td>
   <td>{{ seller.gender }}</td>
   <td>{{ seller.salary }}</td>
   <td>{{ seller.bonus }}%</td>
 </tr>
+}
         </tbody>
 
       </table>
