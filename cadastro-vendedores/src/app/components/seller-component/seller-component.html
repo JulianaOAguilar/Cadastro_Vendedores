@@ -1,0 +1,96 @@
+<div class="container mt-4">
+  <div class="card shadow">
+    <div class="card-header bg-dark text-white">
+      <h4 class="mb-0">Cadastro de Vendedores</h4>
+    </div>
+
+    <div class="card-body">
+      <form>
+
+        <!-- Nome -->
+        <div class="mb-3">
+          <label class="form-label">Nome</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Digite o nome do vendedor">
+        </div>
+
+        <!-- Sexo -->
+        <div class="mb-3">
+  <label class="form-label d-block">Sexo</label>
+
+  <div class="form-check form-check-inline">
+    <input
+      class="form-check-input"
+      type="radio"
+      name="sexo"
+      id="feminino"
+      value="F"
+      [(ngModel)]="sexo">
+
+    <label class="form-check-label" for="feminino">
+      Feminino
+    </label>
+  </div>
+
+  <div class="form-check form-check-inline">
+    <input
+      class="form-check-input"
+      type="radio"
+      name="sexo"
+      id="masculino"
+      value="M"
+      [(ngModel)]="sexo">
+
+    <label class="form-check-label" for="masculino">
+      Masculino
+    </label>
+  </div>
+</div>
+
+        <!-- Salário -->
+        <div class="mb-3">
+          <label class="form-label">Salário</label>
+          <input
+            type="number"
+            class="form-control"
+            placeholder="Digite o salário">
+        </div>
+
+        <!-- Bônus -->
+        <div class="mb-4">
+          <label class="form-label">
+            Bônus (%)
+          </label>
+
+          <input
+  type="range"
+  class="form-range"
+  min="0"
+  max="100"
+  [(ngModel)]="bonus"
+  name="bonus">
+
+<div class="text-center fw-bold">
+  {{ bonus }}%
+</div>
+
+
+        </div>
+
+        <!-- Botões -->
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-success">
+            Salvar
+          </button>
+
+          <button type="reset" class="btn btn-secondary">
+            Limpar
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
