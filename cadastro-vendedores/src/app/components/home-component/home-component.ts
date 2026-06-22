@@ -116,5 +116,29 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  remove(id: number): void {
+
+  if (!confirm('Deseja realmente excluir este vendedor?')) {
+    return;
+  }
+
+  this.sellerService.delete(id).subscribe({
+
+    next: () => {
+
+      this.sellers.update(
+        sellers => sellers.filter(
+          seller => seller.id !== id
+        )
+      );
+
+    },
+
+    error: (err) => {
+      console.error('Erro ao excluir vendedor', err);
+    }
+
+  });
+}
   
 }
