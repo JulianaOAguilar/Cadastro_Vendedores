@@ -5,7 +5,7 @@
     </div>
 
     <div class="card-body">
-      <form>
+      <form [formGroup]="sellerForm" (ngSubmit)="save()">
 
         <!-- Nome -->
         <div class="mb-3">
@@ -13,41 +13,40 @@
           <input
             type="text"
             class="form-control"
-            placeholder="Digite o nome do vendedor">
+            placeholder="Digite o nome do vendedor"
+            formControlName="name">
         </div>
 
         <!-- Sexo -->
         <div class="mb-3">
-  <label class="form-label d-block">Sexo</label>
+          <label class="form-label d-block">Sexo</label>
 
-  <div class="form-check form-check-inline">
-    <input
-      class="form-check-input"
-      type="radio"
-      name="sexo"
-      id="feminino"
-      value="F"
-      [(ngModel)]="sexo">
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="feminino"
+              value="FEMALE"
+              formControlName="gender">
 
-    <label class="form-check-label" for="feminino">
-      Feminino
-    </label>
-  </div>
+            <label class="form-check-label" for="feminino">
+              Feminino
+            </label>
+          </div>
 
-  <div class="form-check form-check-inline">
-    <input
-      class="form-check-input"
-      type="radio"
-      name="sexo"
-      id="masculino"
-      value="M"
-      [(ngModel)]="sexo">
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="masculino"
+              value="MALE"
+              formControlName="gender">
 
-    <label class="form-check-label" for="masculino">
-      Masculino
-    </label>
-  </div>
-</div>
+            <label class="form-check-label" for="masculino">
+              Masculino
+            </label>
+          </div>
+        </div>
 
         <!-- Salário -->
         <div class="mb-3">
@@ -55,7 +54,8 @@
           <input
             type="number"
             class="form-control"
-            placeholder="Digite o salário">
+            placeholder="Digite o salário"
+            formControlName="salary">
         </div>
 
         <!-- Bônus -->
@@ -65,27 +65,30 @@
           </label>
 
           <input
-  type="range"
-  class="form-range"
-  min="0"
-  max="100"
-  [(ngModel)]="bonus"
-  name="bonus">
+            type="range"
+            class="form-range"
+            min="0"
+            max="100"
+            formControlName="bonus">
 
-<div class="text-center fw-bold">
-  {{ bonus }}%
-</div>
-
-
+          <div class="text-center fw-bold">
+            {{ sellerForm.get('bonus')?.value }}%
+          </div>
         </div>
 
         <!-- Botões -->
         <div class="d-flex gap-2">
-          <button type="submit" class="btn btn-success">
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="sellerForm.invalid">
             Salvar
           </button>
 
-          <button type="reset" class="btn btn-secondary">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="sellerForm.reset({ name: '', gender: '', salary: 0, bonus: 0 })">
             Limpar
           </button>
         </div>

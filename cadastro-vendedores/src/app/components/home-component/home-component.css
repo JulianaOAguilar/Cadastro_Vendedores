@@ -1,0 +1,7 @@
+.action-btn {
+  display: none;
+}
+
+.seller-row:hover .action-btn {
+  display: inline-block;
+}
