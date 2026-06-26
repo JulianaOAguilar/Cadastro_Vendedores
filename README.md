@@ -15,7 +15,7 @@ Os dados são persistidos em um banco de dados **H2**.
 
 ---
 
-# Tecnologias utilizadas
+# Tecnologias utilizadas 
 
 ### Frontend
 - Angular
