@@ -31,17 +31,41 @@ export class HomeComponent implements OnInit {
     private fb: FormBuilder
   ) {}
 
-  ngOnInit(): void {
+ ngOnInit(): void {
 
-    this.editForm = this.fb.group({
-      name: ['', Validators.required],
-      gender: ['', Validators.required],
-      salary: [0, Validators.required],
-      bonus: [0]
-    });
+  this.editForm = this.fb.group({
+    name: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(100)
+      ]
+    ],
 
-    this.loadSellers();
-  }
+    gender: [
+      '',
+      Validators.required
+    ],
+
+    salary: [
+      null,
+      [
+        Validators.required,
+        Validators.min(1)
+      ]
+    ],
+
+    bonus: [
+      0,
+      [
+        Validators.min(0)
+      ]
+    ]
+  });
+
+  this.loadSellers();
+}
 
   loadSellers(): void {
     this.sellerService.getAll().subscribe({
@@ -66,43 +90,76 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  update(): void {
+update(): void {
 
-    const selected = this.selectedSeller();
+  if (this.editForm.invalid) {
 
-    if (!selected) {
+    if (this.editForm.get('name')?.hasError('required')) {
+      alert('O nome é obrigatório.');
       return;
     }
 
-    const sellerUpdated: SellerInterface = {
-      ...selected,
-      ...this.editForm.value
-    };
+    if (this.editForm.get('name')?.hasError('minlength')) {
+      alert('O nome deve ter pelo menos 3 caracteres.');
+      return;
+    }
 
-    this.sellerService.update(
-      selected.id,
-      sellerUpdated
-    ).subscribe({
+    if (this.editForm.get('gender')?.hasError('required')) {
+      alert('Selecione o gênero.');
+      return;
+    }
 
-      next: () => {
+    if (this.editForm.get('salary')?.hasError('required')) {
+      alert('Informe o salário.');
+      return;
+    }
 
-        this.loadSellers();
+    if (this.editForm.get('salary')?.hasError('min')) {
+      alert('O salário deve ser maior que zero.');
+      return;
+    }
 
-        this.selectedSeller.set(null);
-
-        this.editForm.reset({
-          name: '',
-          gender: '',
-          salary: 0,
-          bonus: 0
-        });
-      },
-
-      error: (err) => {
-        console.error('Erro ao atualizar vendedor', err);
-      }
-    });
+    if (this.editForm.get('bonus')?.hasError('min')) {
+      alert('O bônus não pode ser negativo.');
+      return;
+    }
   }
+
+  const selected = this.selectedSeller();
+
+  if (!selected) {
+    return;
+  }
+
+  const sellerUpdated: SellerInterface = {
+    ...selected,
+    ...this.editForm.value
+  };
+
+  this.sellerService.update(
+    selected.id,
+    sellerUpdated
+  ).subscribe({
+    next: () => {
+      alert('Vendedor atualizado com sucesso!');
+
+      this.loadSellers();
+
+      this.selectedSeller.set(null);
+
+      this.editForm.reset({
+        name: '',
+        gender: '',
+        salary: 0,
+        bonus: 0
+      });
+    },
+
+    error: () => {
+      alert('Erro ao atualizar o vendedor.');
+    }
+  });
+}
 
   cancelEdit(): void {
 

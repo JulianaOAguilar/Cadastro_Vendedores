@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SellerInterface } from '../../interface/SellerInterface';
 import { SellerService } from '../../services/seller-service';
 
@@ -23,11 +23,32 @@ export class SellerComponent implements OnInit {
   ngOnInit(): void {
 
     this.sellerForm = this.fb.group({
-      name: [''],
-      gender: [''],
-      salary: [0],
-      bonus: [0]
-    });
+  name: [
+    '',
+    [
+      Validators.required,
+      Validators.minLength(5)
+    ]
+  ],
+
+  gender: [
+    '',
+    Validators.required
+  ],
+
+  salary: [
+    0,
+    [
+      Validators.required,
+      Validators.min(1)
+    ]
+  ],
+
+  bonus: [
+    0,
+    Validators.min(0)
+  ]
+});
 
     this.loadSellers();
   }
@@ -41,29 +62,63 @@ export class SellerComponent implements OnInit {
 
   save(): void {
 
-    if (this.sellerForm.invalid) {
-      this.sellerForm.markAllAsTouched();
+  if (this.sellerForm.invalid) {
+
+    this.sellerForm.markAllAsTouched();
+
+    if (this.sellerForm.get('name')?.hasError('required')) {
+      alert('O nome é obrigatório.');
       return;
     }
 
-    const seller: SellerInterface = this.sellerForm.value;
+    if (this.sellerForm.get('name')?.hasError('minlength')) {
+      alert('O nome deve possuir pelo menos 5 caracteres.');
+      return;
+    }
 
-    this.sellerService.create(seller).subscribe({
-      next: () => {
+    if (this.sellerForm.get('gender')?.hasError('required')) {
+      alert('Selecione um sexo.');
+      return;
+    }
 
-        this.loadSellers();
+    if (this.sellerForm.get('salary')?.hasError('required')) {
+      alert('Informe o salário.');
+      return;
+    }
 
-        this.sellerForm.reset({
-          name: '',
-          gender: '',
-          salary: 0,
-          bonus: 0
-        });
+    if (this.sellerForm.get('salary')?.hasError('min')) {
+      alert('O salário deve ser maior que zero.');
+      return;
+    }
 
-      },
-      error: (err) => {
-        console.error('Erro ao cadastrar vendedor', err);
-      }
-    });
+    if (this.sellerForm.get('bonus')?.hasError('min')) {
+      alert('O bônus não pode ser negativo.');
+      return;
+    }
   }
+
+  const seller: SellerInterface = this.sellerForm.value;
+
+  this.sellerService.create(seller).subscribe({
+
+    next: () => {
+
+      alert('Vendedor cadastrado com sucesso!');
+
+      this.loadSellers();
+
+      this.sellerForm.reset({
+        name: '',
+        gender: '',
+        salary: 0,
+        bonus: 0
+      });
+
+    },
+
+    error: () => {
+      alert('Erro ao cadastrar vendedor.');
+    }
+  });
+}
 }
